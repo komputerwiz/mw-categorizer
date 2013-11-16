@@ -1,0 +1,23 @@
+{% extends 'AcmeHelloBundle::layout.html.twig' %}
+
+{% block title %}Manual Entry - {{ parent() }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Input Your Own Content</h1>
+        <form action="{{ path('results') }}" method="post" role="form">
+            <div class="form-group">
+                <label for="article">Article Content</label>
+                <textarea class="form-control" name="article" id="article"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="categories">Current Categories</label>
+                <textarea class="form-control" name="categories" id="categories"></textarea>
+                <p class="help-block">Categories to which this article already belongs should be separated by new lines.</p>
+            </div>
+            <div class="form-group text-right">
+                <button type="submit" class="btn btn-lg btn-primary">GO</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

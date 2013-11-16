@@ -1,0 +1,28 @@
+{% extends 'AcmeHelloBundle::layout.html.twig' %}
+
+{% block title %}Results - {{ parent() }}{% endblock %}
+
+{% block content %}
+    <h1>Results</h1>
+    <p class="dimmed">{{ article|truncate(700) }}</p>
+    <h2>Category Suggestions</h2>
+    <ol id="categories">
+        {% for category in categories %}
+            <li>{{ category }}</li>
+        {% endfor %}
+    </ol>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('vendor/d3/d3.min.js') }}"></script>
+    <script>
+    (function () {
+        var colorScale = d3.scale.linear()
+            .domain([0,0.5,1])
+            .range(['#f00', '#cc0', '#06f']);
+
+        var categories = d3.selectAll('#categories li')
+            .style('color', function () { return colorScale(Math.random()); });
+    })()
+    </script>
+{% endblock %}
