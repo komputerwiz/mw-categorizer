@@ -7,8 +7,8 @@
     <p class="dimmed">{{ article|truncate(700) }}</p>
     <h2>Category Suggestions</h2>
     <ol id="categories">
-        {% for category in categories %}
-            <li>{{ category }}</li>
+        {% for category in categories|sort_by('confidence', { 'reverse': true}) %}
+            <li data-confidence="{{ category.confidence }}">{{ category }}</li>
         {% endfor %}
     </ol>
 {% endblock %}
@@ -18,11 +18,11 @@
     <script>
     (function () {
         var colorScale = d3.scale.linear()
-            .domain([0,0.5,1])
+            .domain([0, 0.5, 1])
             .range(['#f00', '#cc0', '#06f']);
 
         var categories = d3.selectAll('#categories li')
-            .style('color', function () { return colorScale(Math.random()); });
+            .style('color', function () { return colorScale(this.dataset.confidence); });
     })()
     </script>
 {% endblock %}

@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Acme\HelloBundle\Entity\Category;
+
 class DefaultController extends Controller
 {
     /**
@@ -51,19 +53,31 @@ class DefaultController extends Controller
      */
     public function resultsAction(Request $request)
     {
-        $lorem_text = 'lorem ipsum dolor sit amet consectetur adipisicing elit Quae maxime assumenda odio repellat laudantium sed est voluptas facere vel doloribus veritatis accusamus obcaecati dolor sunt id dolorem soluta cum omnis quos sint temporibus cupiditate deserunt voluptate ut eveniet itaque harum dolorum corporis unde ad alias beatae placeat facere praesentium ab inventore neque accusamus nulla nihil sequi repellendus nostrum ipsa voluptate repudiandae deserunt officiis qui ipsum eveniet dolore harum laudantium perspiciatis ab quam officia voluptatibus nisi doloribus dolorum quis consequatur quae libero dolores officia similique quia repellat deleniti perferendis error harum culpa mollitia atque voluptas animi deserunt ut minima doloremque quia';
-        $lorem_words = explode(' ', $lorem_text);
 
         $num_categories = rand(10, 30);
 
-        $keys = array_rand($lorem_words, $num_categories);
-        $cats = array_map(function ($key) use ($lorem_words) {
-            return ucfirst($lorem_words[$key]);
-        }, $keys);
+        $categories = array();
+        for ($i = 0; $i < $num_categories; $i++)
+            $categories[] = new Category(ucfirst($this->getLorem(rand(1,5))));
+
+        $categories = array_unique($categories);
+
+        foreach ($categories as $category)
+            $category->setConfidence(rand(0, 100)/100);
 
         return array(
-            'categories' => array_unique($cats),
+            'categories' => $categories,
             'article' => $request->get('article', ''),
         );
+    }
+
+    private function getLorem($num)
+    {
+        $words = explode(' ', 'lorem ipsum dolor sit amet consectetur adipisicing elit Quae maxime assumenda odio repellat laudantium sed est voluptas facere vel doloribus veritatis accusamus obcaecati dolor sunt id dolorem soluta cum omnis quos sint temporibus cupiditate deserunt voluptate ut eveniet itaque harum dolorum corporis unde ad alias beatae placeat facere praesentium ab inventore neque accusamus nulla nihil sequi repellendus nostrum ipsa voluptate repudiandae deserunt officiis qui ipsum eveniet dolore harum laudantium perspiciatis ab quam officia voluptatibus nisi doloribus dolorum quis consequatur quae libero dolores officia similique quia repellat deleniti perferendis error harum culpa mollitia atque voluptas animi deserunt ut minima doloremque quia');
+
+        $ks = $num > 1 ? array_rand($words, $num) : array(array_rand($words));
+        $chosen = array_map(function ($k) use ($words) { return $words[$k]; }, $ks);
+
+        return implode(' ', $chosen);
     }
 }
