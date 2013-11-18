@@ -38,6 +38,18 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/fetch.do", name="do_fetch")
+     * @Template("AcmeHelloBundle:Default:fetch.html.twig")
+     * @Method("POST")
+     */
+    public function doFetchAction(Request $request)
+    {
+        return array(
+            'form' => $form->createView()
+        );
+    }
+
+    /**
      * @Route("/input", name="input")
      * @Template
      */
