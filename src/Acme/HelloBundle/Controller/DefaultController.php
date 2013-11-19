@@ -160,7 +160,7 @@ class DefaultController extends Controller
 
     private function getCategories($content, $currentCategories)
     {
-        $nExisting = rand(0, floor(count($currentCategories)/2));
+        $nExisting = rand(0, ceil(count($currentCategories)/2));
         $nCategories = rand(10, 20);
 
         $generated = array();
