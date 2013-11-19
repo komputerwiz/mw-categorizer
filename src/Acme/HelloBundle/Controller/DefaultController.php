@@ -50,7 +50,8 @@ class DefaultController extends Controller
         $fetchForm->handleRequest($request);
 
         if ($fetchForm->isValid()) {
-            $title = $fetchForm->getData()['title'];
+            $data = $fetchForm->getData();
+            $title = $data['title'];
             $inputData = $this->getWikipediaArticle($title);
             if (!$inputData) {
                 $this->get('session')->getFlashBag()->add('danger', "Could not find Wikipedia article with title <strong>$title</strong>.");
