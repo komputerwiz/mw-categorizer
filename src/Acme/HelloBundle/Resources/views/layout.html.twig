@@ -15,6 +15,15 @@
     </nav>
 
     <div class="container">
+        {% for type in ['success', 'info', 'warning', 'danger'] %}
+            {% for message in app.session.flashbag.get(type) %}
+                <div class="alert alert-{{ type }} alert-dismissable">
+                    <button class="close" type="button" data-dismiss="alert" aria-hiden="true">&times;</button>
+                    {{ message|raw }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
         {% block content %}{% endblock %}
     </div>
 {% endblock %}
