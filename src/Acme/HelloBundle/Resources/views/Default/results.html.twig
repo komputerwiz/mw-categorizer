@@ -8,7 +8,12 @@
     <h2>Category Suggestions</h2>
     <ol id="categories">
         {% for category in categories|sort_by('confidence', { 'reverse': true}) %}
-            <li data-confidence="{{ category.confidence }}">{{ category }}</li>
+            <li data-confidence="{{ category.confidence }}">
+                {{ category }}
+                {% if category.assigned %}
+                    <i class="glyphicon glyphicon-ok" style="color:green;"></i>
+                {% endif %}
+            </li>
         {% endfor %}
     </ol>
 {% endblock %}

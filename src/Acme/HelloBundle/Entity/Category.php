@@ -6,11 +6,13 @@ class Category
 {
     private $confidence;
     private $title;
+    private $assigned;
 
 
-    public function __construct($title)
+    public function __construct($title, $assigned = false)
     {
         $this->title = $title;
+        $this->assigned = $assigned;
     }
 
     public function __toString()
@@ -33,5 +35,16 @@ class Category
     public function getConfidence()
     {
         return $this->confidence;
+    }
+
+    public function setAssigned($assigned = true)
+    {
+        $this->assigned = $assigned;
+        return $this;
+    }
+
+    public function isAssigned()
+    {
+        return $this->assigned;
     }
 }

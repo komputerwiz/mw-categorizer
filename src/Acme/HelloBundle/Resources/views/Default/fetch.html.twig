@@ -7,17 +7,17 @@
     <p>
         Enter the title of the existing Wikipedia article content you wish to fetch, and the form will be populated for you.
     </p>
-    <form action="{{ path('results') }}" method="post" role="form">
-        <div class="row">
-            <div class="col-md-10">
-                <div class="form-group input-group input-group-lg">
-                    <label for="title" class="input-group-addon">Article Title</label>
-                    <input id="title" type="text" class="form-control" placeholder="{{ placeholder }}" />
-                </div>
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-10">
+            <div class="form-group input-group input-group-lg{% if form.title.vars.errors|length > 0 %} has-error{% endif %}">
+                {{ form_label(form.title, 'Article Title/URL', {'label_attr': {'class': 'input-group-addon'}}) }}
+                {{ form_widget(form.title, {'attr': {'placeholder': placeholder}}) }}
             </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary btn-lg">Fetch!</button>
-            </div>
+            {{ form_errors(form.title) }}
         </div>
-    </form>
+        <div class="col-md-2">{{ form_widget(form.fetch, {'label': 'Fetch!', 'attr': {'class': 'btn btn-primary btn-lg'}}) }}</div>
+    </div>
+    {{ form_end(form) }}
 {% endblock %}
