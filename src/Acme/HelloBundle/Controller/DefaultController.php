@@ -61,6 +61,7 @@ class DefaultController extends Controller
 
                 return $this->render('AcmeHelloBundle:Default:verify.html.twig', array(
                     'form' => $inputForm->createView(),
+                    'article_title' => $title,
                 ));
             }
         }
@@ -145,8 +146,9 @@ class DefaultController extends Controller
             // there should only be one $page
             if (array_key_exists('missing', $page)) return false;
             $categories = '';
-            foreach ($page['categories'] as $category)
-                $categories .= $category['title'] . "\n";
+            if (array_key_exists('categories', $page))
+                foreach ($page['categories'] as $category)
+                    $categories .= $category['title'] . "\n";
 
             $categories = trim($categories);
 

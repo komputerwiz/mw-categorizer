@@ -13,6 +13,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "3.0.2",
-    "d3": null
+    "d3": null,
+    "jquery-autosize": null
   }
 }

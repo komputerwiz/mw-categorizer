@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-md-10">
             <div class="form-group input-group input-group-lg{% if form.title.vars.errors|length > 0 %} has-error{% endif %}">
-                {{ form_label(form.title, 'Article Title/URL', {'label_attr': {'class': 'input-group-addon'}}) }}
+                {{ form_label(form.title, 'Article Title', {'label_attr': {'class': 'input-group-addon'}}) }}
                 {{ form_widget(form.title, {'attr': {'placeholder': placeholder}}) }}
             </div>
             {{ form_errors(form.title) }}

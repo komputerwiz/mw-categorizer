@@ -8,3 +8,15 @@
         {% include 'AcmeHelloBundle:Default:_inputForm.html.twig' %}
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/jquery-autosize/jquery.autosize.min.js') }}"></script>
+    <script>
+        (function ($) {
+            $(function () {
+                $('textarea').autosize();
+            });
+        })(jQuery);
+    </script>
+{% endblock %}
