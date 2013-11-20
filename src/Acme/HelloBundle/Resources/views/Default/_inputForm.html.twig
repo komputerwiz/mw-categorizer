@@ -1,5 +1,9 @@
 {{ form_start(form) }}
+{% if form.submit_top is defined %}
+    {# only for verify form #}
+    {{ form_row(form.submit_top, {'label': 'GO', 'attr': {'class': 'btn-lg'}}) }}
+{% endif %}
 {{ form_row(form.content, {'label': 'Article Content', 'label_attr': {'class': 'test'}}) }}
-{{ form_row(form.categories, {'label': 'Current Categories', 'help': 'Categories to which this article already belongs should be separated by new lines.'})}}
-{{ form_row(form.submit, {'label': 'GO', 'attr': {'class': 'btn-lg'}}) }}
+{{ form_row(form.categories, {'label': 'Current Categories', 'help': 'Categories to which this article already belongs should be separated by new lines.'}) }}
+{{ form_row(form.submit_bottom, {'label': 'GO', 'attr': {'class': 'btn-lg'}}) }}
 {{ form_end(form) }}

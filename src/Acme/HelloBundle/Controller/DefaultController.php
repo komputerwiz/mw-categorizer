@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Acme\HelloBundle\Entity\Category;
 use Acme\HelloBundle\Form\Type\FetchType;
 use Acme\HelloBundle\Form\Type\InputType;
+use Acme\HelloBundle\Form\Type\VerifyType;
 
 class DefaultController extends Controller
 {
@@ -56,7 +57,7 @@ class DefaultController extends Controller
             if (!$inputData) {
                 $this->get('session')->getFlashBag()->add('danger', "Could not find Wikipedia article with title <strong>$title</strong>.");
             } else {
-                $inputForm = $this->createForm(new InputType(), $inputData, array(
+                $inputForm = $this->createForm(new VerifyType(), $inputData, array(
                     'action' => $this->generateUrl('results'),
                 ));
 

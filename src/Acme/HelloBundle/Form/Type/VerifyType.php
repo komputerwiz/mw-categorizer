@@ -6,21 +6,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class InputType extends AbstractType
+class VerifyType extends InputType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('content', 'textarea', array(
-                'constraints' => new Assert\NotBlank(),
-            ))
-            ->add('categories', 'textarea')
-            ->add('submit_bottom', 'submit')
-        ;
+        $builder->add('submit_top', 'submit');
+        parent::buildForm($builder, $options);
     }
 
     public function getName()
     {
-        return 'acme_input';
+        return 'acme_verify';
     }
 }
