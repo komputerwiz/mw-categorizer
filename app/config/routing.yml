@@ -1,5 +1,4 @@
 acme_hello:
-    resource: "@AcmeHelloBundle/Controller/"
-    type:     annotation
+    resource: "@AcmeHelloBundle/Resources/config/routing.yml"
     prefix:   /
 

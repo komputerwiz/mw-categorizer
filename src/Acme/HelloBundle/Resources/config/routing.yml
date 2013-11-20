@@ -1,0 +1,3 @@
+main:
+    resource: "@AcmeHelloBundle/Controller/"
+    type:     annotation
