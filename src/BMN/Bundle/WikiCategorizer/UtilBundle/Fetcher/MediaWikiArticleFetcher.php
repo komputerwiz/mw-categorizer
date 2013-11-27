@@ -6,7 +6,7 @@ class MediaWikiArticleFetcher extends AbstractArticleFetcher
 {
     /**
      * MediaWiki Host URL
-     * @var [type]
+     * @var string
      */
     private $url;
 

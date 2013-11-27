@@ -52,19 +52,17 @@ class DefaultController extends Controller
 
         if ($fetchForm->isValid()) {
             $data = $fetchForm->getData();
-            $title = $data['title'];
-
             $inputData = $this->get('mediawiki_article_fetcher')->fetch($data);
             if (!$inputData) {
-                $this->get('session')->getFlashBag()->add('danger', "Could not find Wikipedia article with title <strong>$title</strong>.");
+                $this->get('session')->getFlashBag()->add('danger', "Could not find Wikipedia article with title <strong>{$data['title']}</strong>.");
             } else {
                 $inputForm = $this->createForm(new VerifyType(), $inputData, array(
-                    'action' => $this->generateUrl('results'),
+                    'action' => $this->generateUrl('results', array('verify' => true)),
                 ));
 
                 return $this->render('BMNWikiCategorizerFrontendBundle:Default:verify.html.twig', array(
                     'form' => $inputForm->createView(),
-                    'article_title' => $title,
+                    'article_title' => $data['title'],
                 ));
             }
         }
@@ -92,18 +90,26 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/results", name="results")
+     * @Route("/results:{verify}", name="results", defaults={"verify": false})
      * @Method("POST")
      */
-    public function resultsAction(Request $request)
+    public function resultsAction($verify, Request $request)
     {
-        $form = $this->createForm(new InputType());
+        if ($verify) {
+            $form = $this->createForm(new VerifyType(), null, array(
+                'action' => $this->generateUrl('results', array('verify' => true)),
+            ));
+        } else {
+            $form = $this->createForm(new InputType());
+        }
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $data = $form->getData();
+            $currentCategories = (0 === strlen(trim($data['categories']))) ? array() : explode("\n", trim($data['categories']));
             return $this->render('BMNWikiCategorizerFrontendBundle:Default:results.html.twig', array(
-                'categories' => $this->getRandomCategories($data['content'], explode("\n", trim($data['categories']))),
+                'categories' => $this->getRandomCategories($data['content'], $currentCategories),
                 'article' => $data['content'],
             ));
         }

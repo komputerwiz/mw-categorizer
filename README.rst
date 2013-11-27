@@ -20,7 +20,7 @@ Deployment
 Installation
 ------------
 
-Prior to installation, please ensure that the bower_ (requires node.js_), git_, and php_ executables
+Prior to installation, please ensure that the bower_ (requires `node.js`_), git_, and php_ executables
 are installed and available in your ``$PATH`` environment variable.
 
 Clone this repository (or download and extract an archive) to an appropriate
