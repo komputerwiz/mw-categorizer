@@ -2,17 +2,55 @@
 
 namespace BMN\Bundle\WikiCategorizer\FrontendBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Category
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="BMN\Bundle\WikiCategorizer\FrontendBundle\Entity\CategoryRepository")
+ */
 class Category
 {
-    private $confidence;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
     private $title;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="prob_c", type="decimal")
+     */
+    private $probC;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="prob_t", type="array")
+     */
+    private $probT;
+
+    // unmapped variables
     private $assigned;
+    private $confidence;
 
 
-    public function __construct($title, $assigned = false)
+    public function __construct($title = null)
     {
         $this->title = $title;
-        $this->assigned = $assigned;
+        $this->probT = array();
     }
 
     public function __toString()
@@ -21,9 +59,81 @@ class Category
     }
 
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Category
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set P(c)
+     *
+     * @param float $probC
+     * @return Category
+     */
+    public function setProbC($probC)
+    {
+        $this->probC = $probC;
+        return $this;
+    }
+
+    /**
+     * Get P(c)
+     *
+     * @return float
+     */
+    public function getProbC()
+    {
+        return $this->probC;
+    }
+
+    /**
+     * Set P(t|c) in array form: array(t1 => P(t1|c), t2 => P(t2|c), ...)
+     *
+     * @param array $probT
+     * @return Category
+     */
+    public function setProbT($term, $val)
+    {
+        $this->probT[$term] = $val;
+        return $this;
+    }
+
+    /**
+     * Get P(t|c)
+     *
+     * @return array
+     */
+    public function getProbT($term)
+    {
+        // ignore unknown terms
+        return $this->probT[$term] ?: 1;
     }
 
     public function setConfidence($confidence)
