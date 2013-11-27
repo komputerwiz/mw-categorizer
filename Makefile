@@ -11,6 +11,7 @@ composer.phar:
 
 .PHONY: install
 install: composer.phar
+	chmod -R 777 app/logs app/cache
 	bower install
 	php composer.phar install
 	$(SF) $(SFFLAGS) assetic:dump
@@ -18,6 +19,7 @@ install: composer.phar
 
 .PHONY: update
 update: composer.phar
+	php composer.phar self_update
 	git pull
 	bower install
 	php composer.phar install
