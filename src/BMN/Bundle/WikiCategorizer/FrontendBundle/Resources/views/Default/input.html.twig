@@ -1,0 +1,22 @@
+{% extends 'BMNWikiCategorizerFrontendBundle::layout.html.twig' %}
+
+{% block title %}Manual Entry - {{ parent() }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Input Your Own Content</h1>
+        {% include 'BMNWikiCategorizerFrontendBundle:Default:_inputForm.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/jquery-autosize/jquery.autosize.min.js') }}"></script>
+    <script>
+        (function ($) {
+            $(function () {
+                $('textarea').autosize();
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

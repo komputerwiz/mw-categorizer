@@ -1,0 +1,19 @@
+parameters:
+    bmn_wiki_categorizer_util.twig.extension.array.class: BMN\Bundle\WikiCategorizer\UtilBundle\Twig\Extension\ArrayExtension
+    bmn_wiki_categorizer_util.lorem_generator.class: BMN\Bundle\WikiCategorizer\UtilBundle\Lorem\LoremGenerator
+    bmn_wiki_categorizer_util.mediawiki_article_fetcher.class: BMN\Bundle\WikiCategorizer\UtilBundle\Fetcher\MediaWikiArticleFetcher
+
+services:
+    bmn_wiki_categorizer_util.twig.extension.array:
+        class: %bmn_wiki_categorizer_util.twig.extension.array.class%
+        tags:
+            - { name: twig.extension }
+
+    bmn_wiki_categorizer_util.lorem_generator:
+        class: %bmn_wiki_categorizer_util.lorem_generator.class%
+
+    bmn_wiki_categorizer_util.mediawiki_article_fetcher:
+        class: %bmn_wiki_categorizer_util.mediawiki_article_fetcher.class%
+        arguments:
+            - '%bmn_wiki_categorizer_util.mediawiki_article_fetcher.user_agent%'
+            - '%bmn_wiki_categorizer_util.mediawiki_article_fetcher.url%'

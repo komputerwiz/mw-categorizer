@@ -27,13 +27,13 @@ twig:
     strict_variables: %kernel.debug%
     form:
         resources:
-            - 'AcmeHelloBundle:Form:fields.html.twig'
+            - 'BMNWikiCategorizerFrontendBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ AcmeHelloBundle ]
+    bundles:        [ BMNWikiCategorizerFrontendBundle ]
     java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -69,3 +69,8 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+bmn_wiki_categorizer_util:
+    mediawiki_article_fetcher:
+        url:        'http://en.wikipedia.org/w/api.php'
+        user_agent: 'WikipediaCategorizer/0.1 (mbarry@tamu.edu)'

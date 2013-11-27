@@ -1,0 +1,3 @@
+main:
+    resource: "@BMNWikiCategorizerFrontendBundle/Controller/"
+    type:     annotation
