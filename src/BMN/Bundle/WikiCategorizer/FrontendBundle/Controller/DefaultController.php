@@ -108,6 +108,7 @@ class DefaultController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
             $currentCategories = (0 === strlen(trim($data['categories']))) ? array() : explode("\n", trim($data['categories']));
+            array_walk($currentCategories, function (&$c) { $c = trim($c); });
             return $this->render('BMNWikiCategorizerFrontendBundle:Default:results.html.twig', array(
                 'categories' => $this->getCategories($data['content'], $currentCategories),
                 'article' => $data['content'],
@@ -133,13 +134,28 @@ class DefaultController extends Controller
 
     private function getCategories($content, $currentCategories)
     {
-        // get all categories
-        // mark any current as such
-        // for all categories
-        //   compute confidence P(c|d) = P(c) * prod(P(t|c), t in d)
-        // sort categories by confidence
-        // return top 10 categories
-        return $this->getDummyCategories($currentCategories);
+        $repo = $this->getDoctrine()->getRepository('BMNWikiCategorizerFrontendBundle:Category');
+        $tokenizer = $this->get('mediawiki_tokenizer');
+
+        $categories = $repo->findAll();
+        foreach ($categories as $category) {
+            $confidence = $category->getProbC();
+            foreach (array_unique($tokenizer->tokenize($content)) as $term)
+                $confidence += $category->getProbT($term);
+            $category->setConfidence($confidence);
+        }
+
+        usort($categories, function ($a, $b) {
+            return $a->getConfidence() == $b->getConfidence() ? 0 : $a->getConfidence() > $b->getConfidence() ? -1 : 1;
+        });
+
+        $top = array_slice($categories, 0, 20);
+
+        foreach ($top as $category)
+            if (in_array($category->getTitle(), $currentCategories))
+                $category->setAssigned();
+
+        return $top;
     }
 
     private function getDummyCategories($currentCategories)
