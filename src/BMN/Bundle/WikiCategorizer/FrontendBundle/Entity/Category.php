@@ -136,7 +136,7 @@ class Category
         if (null === $term)
             return $this->probT;
         else
-            return $this->probT[$term] ?: 1;
+            return isset($this->probT[$term]) ? $this->probT[$term] : 1;
     }
 
     public function setConfidence($confidence)

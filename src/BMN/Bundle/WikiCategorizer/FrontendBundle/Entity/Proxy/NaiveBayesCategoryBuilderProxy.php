@@ -110,13 +110,13 @@ class NaiveBayesCategoryBuilderProxy
      */
     public function getCategory()
     {
-        // P(c) = (num articles in category) / (num articles)
-        $this->category->setProbC($this->docCounter / self::$totalDocCounter);
+        // P(c) = log( (num articles in category) / (num articles) )
+        $this->category->setProbC(log($this->docCounter / self::$totalDocCounter));
 
-        // P(t|c) = (collection frequency of t in c) / (num words in c)
+        // P(t|c) = log( (collection frequency of t in c) / (num words in c) )
         $cfs = array_count_values($this->words);
         $n = count($this->words);
-        array_walk($cfs, function (&$cf) use ($n) { return $cf /= $n; });
+        array_walk($cfs, function (&$cf) use ($n) { return $cf = log($cf/$n); });
         $this->category->setProbT($cfs);
 
         return $this->category;

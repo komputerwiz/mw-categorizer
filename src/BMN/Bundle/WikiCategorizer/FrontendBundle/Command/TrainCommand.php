@@ -48,8 +48,8 @@ class TrainCommand extends ContainerAwareCommand
             foreach ($article['categories'] as $cat) {
                 // track which words belong to which category for P(t|c)
                 // track number of articles in each category for P(c)
-                $cp = new CategoryProxy($cat);
-                $proxies[] = $cp->addWords($words)->incrementDocCounter();
+                $cp = isset($proxies[$cat]) ? $proxies[$cat] : new CategoryProxy($cat);
+                $proxies[$cat] = $cp->addWords($words)->incrementDocCounter();
             }
         }
 
