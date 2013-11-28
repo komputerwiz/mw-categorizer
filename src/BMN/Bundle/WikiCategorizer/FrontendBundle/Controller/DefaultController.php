@@ -109,7 +109,7 @@ class DefaultController extends Controller
             $data = $form->getData();
             $currentCategories = (0 === strlen(trim($data['categories']))) ? array() : explode("\n", trim($data['categories']));
             return $this->render('BMNWikiCategorizerFrontendBundle:Default:results.html.twig', array(
-                'categories' => $this->getRandomCategories($data['content'], $currentCategories),
+                'categories' => $this->getCategories($data['content'], $currentCategories),
                 'article' => $data['content'],
             ));
         }
@@ -131,7 +131,18 @@ class DefaultController extends Controller
     }
 
 
-    private function getRandomCategories($content, $currentCategories)
+    private function getCategories($content, $currentCategories)
+    {
+        // get all categories
+        // mark any current as such
+        // for all categories
+        //   compute confidence P(c|d) = P(c) * prod(P(t|c), t in d)
+        // sort categories by confidence
+        // return top 10 categories
+        return $this->getDummyCategories($currentCategories);
+    }
+
+    private function getDummyCategories($currentCategories)
     {
         $lorem = $this->get('lorem_generator');
 

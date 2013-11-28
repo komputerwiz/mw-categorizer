@@ -1,5 +1,13 @@
+parameters:
+    bmn_wiki_categorizer_frontend.train_command.class: BMN\Bundle\WikiCategorizer\FrontendBundle\Command\TrainCommand
+
 services:
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
+
+    bmn_wiki_categorizer_frontend.train_command:
+        class: %bmn_wiki_categorizer_frontend.train_command.class%
+        tags:
+            - { name: console.command }
