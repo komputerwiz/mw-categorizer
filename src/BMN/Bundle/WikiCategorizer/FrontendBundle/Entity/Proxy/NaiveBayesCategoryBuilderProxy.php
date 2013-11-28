@@ -115,8 +115,9 @@ class NaiveBayesCategoryBuilderProxy
 
         // P(t|c) = (collection frequency of t in c) / (num words in c)
         $cfs = array_count_values($this->words);
-        $probT = array_walk($cfs, function($cf, $t, $n) { return $cf/$n; }, count($this->words));
-        $this->category->setProbT($probT);
+        $n = count($this->words);
+        array_walk($cfs, function (&$cf) use ($n) { return $cf /= $n; });
+        $this->category->setProbT($cfs);
 
         return $this->category;
     }

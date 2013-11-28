@@ -31,7 +31,7 @@ class Category
     /**
      * @var float
      *
-     * @ORM\Column(name="prob_c", type="decimal")
+     * @ORM\Column(name="prob_c", type="float")
      */
     private $probC;
 
@@ -130,10 +130,13 @@ class Category
      *
      * @return array
      */
-    public function getProbT($term)
+    public function getProbT($term = null)
     {
         // ignore unknown terms
-        return $this->probT[$term] ?: 1;
+        if (null === $term)
+            return $this->probT;
+        else
+            return $this->probT[$term] ?: 1;
     }
 
     public function setConfidence($confidence)

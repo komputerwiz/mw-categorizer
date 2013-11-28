@@ -63,7 +63,8 @@ class TrainCommand extends ContainerAwareCommand
         // save generated category data
         $em = $this->getContainer()->get('doctrine')->getManager();
         foreach ($proxies as $proxy) {
-            $em->persist($proxy->getCategory());
+            $category = $proxy->getCategory();
+            $em->persist($category);
         }
         $em->flush();
     }
