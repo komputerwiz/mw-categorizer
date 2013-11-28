@@ -119,9 +119,9 @@ class Category
      * @param array $probT
      * @return Category
      */
-    public function setProbT($term, $val)
+    public function setProbT($probT)
     {
-        $this->probT[$term] = $val;
+        $this->probT = $probT;
         return $this;
     }
 

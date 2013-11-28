@@ -31,5 +31,6 @@ class BMNWikiCategorizerUtilExtension extends Extension
 
         $container->setAlias('lorem_generator', 'bmn_wiki_categorizer_util.lorem_generator');
         $container->setAlias('mediawiki_article_fetcher', 'bmn_wiki_categorizer_util.mediawiki_article_fetcher');
+        $container->setAlias('mediawiki_tokenizer', 'bmn_wiki_categorizer_util.mediawiki_tokenizer');
     }
 }
