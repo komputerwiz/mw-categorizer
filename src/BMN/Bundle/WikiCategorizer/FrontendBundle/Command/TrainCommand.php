@@ -37,7 +37,11 @@ class TrainCommand extends ContainerAwareCommand
 
         $tokenizer = $this->getContainer()->get('mediawiki_tokenizer');
 
-        $output->writeln('Loaded ' . basename($file));
+        $output->writeln(sprintf('Loaded %s', basename($file)));
+        $output->writeln('Processing articles');
+
+        $progress = $this->getHelperSet()->get('progress');
+        $progress->start($output, count($articles));
 
         // collect training data: count stuff
         $proxies = array();
@@ -51,7 +55,10 @@ class TrainCommand extends ContainerAwareCommand
                 $cp = isset($proxies[$cat]) ? $proxies[$cat] : new CategoryProxy($cat);
                 $proxies[$cat] = $cp->addWords($words)->incrementDocCounter();
             }
+
+            $progress->advance();
         }
+        $progress->finish();
 
         $translator = $this->getContainer()->get('translator');
         $output->writeln($translator->transChoice(
@@ -59,13 +66,21 @@ class TrainCommand extends ContainerAwareCommand
             count($proxies),
             array('%count%' => count($proxies))
         ));
+        $output->writeln('Saving training data to database');
 
         // save generated category data
+        $progress->start($output, count($proxies));
         $em = $this->getContainer()->get('doctrine')->getManager();
+        $i = 0;
         foreach ($proxies as $proxy) {
             $category = $proxy->getCategory();
             $em->persist($category);
+            // flush every so often to prevent backlog
+            if (0 === $i++ % 100) $em->flush();
+            $progress->advance();
         }
         $em->flush();
+        $progress->finish();
+        $output->writeln('cleaning up');
     }
 }

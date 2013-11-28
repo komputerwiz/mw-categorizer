@@ -20,7 +20,13 @@ class NaiveBayesCategoryBuilderProxy
      * Words associated with this category
      * @var array
      */
-    private $words;
+    private $cfs;
+
+    /**
+     * Number of words in this category
+     * @var integer
+     */
+    private $wordCounter;
 
     /**
      * Number of documents in this category
@@ -40,7 +46,8 @@ class NaiveBayesCategoryBuilderProxy
         $this->category = new Category();
         $this->category->setTitle($title);
 
-        $this->words = array();
+        $this->cfs = array();
+        $this->wordCounter = 0;
         $this->docCounter = 0;
     }
 
@@ -100,7 +107,15 @@ class NaiveBayesCategoryBuilderProxy
      */
     public function addWords(array $words)
     {
-        $this->words = array_merge($this->words, $words);
+        $this->wordCounter += count($words);
+
+        foreach (array_count_values($words) as $word => $freq) {
+            if (isset($this->cfs[$word]))
+                $this->cfs[$word] += $freq;
+            else
+                $this->cfs[$word] = $freq;
+        }
+
         return $this;
     }
 
@@ -114,10 +129,9 @@ class NaiveBayesCategoryBuilderProxy
         $this->category->setProbC(log($this->docCounter / self::$totalDocCounter));
 
         // P(t|c) = log( (collection frequency of t in c) / (num words in c) )
-        $cfs = array_count_values($this->words);
-        $n = count($this->words);
-        array_walk($cfs, function (&$cf) use ($n) { return $cf = log($cf/$n); });
-        $this->category->setProbT($cfs);
+        $this->category->setProbT(array_map(function ($cf) {
+            return log($cf/$this->wordCounter);
+        }, $this->cfs));
 
         return $this->category;
     }
