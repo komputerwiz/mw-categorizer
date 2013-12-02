@@ -1,0 +1,14 @@
+Performance Enhancement
+
+  PHP Language / Symfony Framework
+   ☐ Caching!!!
+   ☐ Is there a faster way to find the top categories without sorting?
+   ☐ isset vs. array_key_exists
+
+  Tokenization
+   ☐ remove stop words
+   ☐ stemming
+   ☐ wiki parsing
+
+  Miscellaneous
+   ☐ Use separate process (in separate language) to look up data

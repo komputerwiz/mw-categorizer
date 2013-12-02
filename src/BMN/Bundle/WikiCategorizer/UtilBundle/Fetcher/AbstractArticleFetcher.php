@@ -29,6 +29,8 @@ abstract class AbstractArticleFetcher
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
         $data = curl_exec($ch);
+        if (!$data)
+            throw new \RuntimeException("Could not fetch article data");
         return $this->handleData($data);
     }
 

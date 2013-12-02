@@ -137,10 +137,12 @@ class DefaultController extends Controller
         $repo = $this->getDoctrine()->getRepository('BMNWikiCategorizerFrontendBundle:Category');
         $tokenizer = $this->get('mediawiki_tokenizer');
 
+        $terms = array_unique($tokenizer->tokenize($content));
+
         $categories = $repo->findAll();
         foreach ($categories as $category) {
             $confidence = $category->getProbC();
-            foreach (array_unique($tokenizer->tokenize($content)) as $term)
+            foreach ($terms as $term)
                 $confidence += $category->getProbT($term);
             $category->setConfidence($confidence);
         }
