@@ -53,6 +53,7 @@ class MediaWikiTokenizer extends AbstractTokenizer
 
         $resolver->setDefaults(array(
             'stripTags' => true,
+            'stripApostrophes' => true,
             'removeStopWords' => true,
             'stemming' => true,
         ));
@@ -66,6 +67,10 @@ class MediaWikiTokenizer extends AbstractTokenizer
         if ($this->options['stripTags'])
             $str = strip_tags($str);
 
+        if ($this->options['stripApostrophes'])
+            $str = str_replace("'", '', $str);
+
+        // look for groupings of alpha characters; disregard symbols and numbers
         preg_match_all('([a-z]+)', strtolower($str), $words);
         $tokens = $words[0];
 
