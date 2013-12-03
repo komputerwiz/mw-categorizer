@@ -52,7 +52,9 @@ class MediaWikiTokenizer extends AbstractTokenizer
         parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults(array(
+            'stripTags' => true,
             'removeStopWords' => true,
+            'stemming' => true,
         ));
     }
 
@@ -61,6 +63,9 @@ class MediaWikiTokenizer extends AbstractTokenizer
      */
     public function tokenize($str)
     {
+        if ($this->options['stripTags'])
+            $str = strip_tags($str);
+
         preg_match_all('([a-z]+)', strtolower($str), $words);
         $tokens = $words[0];
 
@@ -68,6 +73,11 @@ class MediaWikiTokenizer extends AbstractTokenizer
             $tokens = array_filter($tokens, function ($w) {
                 return !in_array($w, static::$stopWords);
             });
+
+        if ($this->options['stemming'])
+            $tokens = array_map(function ($t) {
+                return \Porter::Stem($t);
+            }, $tokens);
 
         return $tokens;
     }

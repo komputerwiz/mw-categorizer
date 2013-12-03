@@ -9,8 +9,9 @@ Performance Enhancement
 
   Tokenization
    ✔ remove stop words @done (13-12-02 22:37)
-   ☐ stemming
-   ☐ wiki parsing
+   ✔ stemming @done (13-12-02 23:53)
+       Porter Stemmer provided by camspiers/porter-stemmer package
+   ☐ WikiText parsing
 
   Miscellaneous
    ☐ Use separate process (in separate language) to look up data
