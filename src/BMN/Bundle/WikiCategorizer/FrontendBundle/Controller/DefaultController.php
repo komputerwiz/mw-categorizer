@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use BMN\Bundle\WikiCategorizer\FrontendBundle\Collection\CategoryConfidenceMaxHeap;
 use BMN\Bundle\WikiCategorizer\FrontendBundle\Entity\Category;
 use BMN\Bundle\WikiCategorizer\FrontendBundle\Form\Type\FetchType;
 use BMN\Bundle\WikiCategorizer\FrontendBundle\Form\Type\InputType;
@@ -138,6 +139,7 @@ class DefaultController extends Controller
         $tokenizer = $this->get('mediawiki_tokenizer');
 
         $terms = array_unique($tokenizer->tokenize($content));
+        $heap = new CategoryConfidenceMaxHeap();
 
         $categories = $repo->findAll();
         foreach ($categories as $category) {
@@ -145,13 +147,10 @@ class DefaultController extends Controller
             foreach ($terms as $term)
                 $confidence += $category->getProbT($term);
             $category->setConfidence($confidence);
+            $heap->insert($category);
         }
 
-        usort($categories, function ($a, $b) {
-            return $a->getConfidence() == $b->getConfidence() ? 0 : $a->getConfidence() > $b->getConfidence() ? -1 : 1;
-        });
-
-        $top = array_slice($categories, 0, 20);
+        $top = iterator_to_array(new \LimitIterator($heap, 0, 20));
 
         foreach ($top as $category)
             if (in_array($category->getTitle(), $currentCategories))
