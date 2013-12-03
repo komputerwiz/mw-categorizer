@@ -31,7 +31,7 @@ class MediaWikiArticleFetcher extends AbstractArticleFetcher
      */
     protected function getUrlParams(array $options)
     {
-        if (!array_key_exists('title', $options))
+        if (!isset($options['title']))
             throw new InvalidArgumentException('Missing "title" key for MediaWikiArticleFetcher');
 
         $superParams = parent::getUrlParams($options);
@@ -55,9 +55,9 @@ class MediaWikiArticleFetcher extends AbstractArticleFetcher
 
         foreach ($wikiData['query']['pages'] as $id => $page) {
             // there should only be one $page
-            if (array_key_exists('missing', $page)) return false;
+            if (isset($page['missing'])) return false;
             $categories = '';
-            if (array_key_exists('categories', $page))
+            if (isset($page['categories']))
                 foreach ($page['categories'] as $category)
                     $categories .= $category['title'] . "\n";
 

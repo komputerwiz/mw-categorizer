@@ -3,7 +3,8 @@ Performance Enhancement
   PHP Language / Symfony Framework
    ☐ Caching!!!
    ☐ Is there a faster way to find the top categories without sorting?
-   ☐ isset vs. array_key_exists
+   ✔ isset vs. array_key_exists @done (13-12-02 16:52)
+       issset is definitely the fastest way to do this, but there's a caveat: if $arr[$key] === NULL, then isset($arr[$key]) will return false. This does not apply to us, but for future reference, the correct way to do this is to use isset($arr[$key]) || array_key_exists($key, $arr): http://www.zomeoff.com/php-fast-way-to-determine-a-key-elements-existance-in-an-array/
 
   Tokenization
    ☐ remove stop words
