@@ -52,9 +52,9 @@ class MediaWikiTokenizer extends AbstractTokenizer
         parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults(array(
-            'stripTags' => true,
-            'stripApostrophes' => true,
-            'removeStopWords' => true,
+            'strip_tags' => true,
+            'strip_apostrophes' => true,
+            'remove_stop_words' => true,
             'stemming' => true,
         ));
     }
@@ -64,17 +64,17 @@ class MediaWikiTokenizer extends AbstractTokenizer
      */
     public function tokenize($str)
     {
-        if ($this->options['stripTags'])
+        if ($this->options['strip_tags'])
             $str = strip_tags($str);
 
-        if ($this->options['stripApostrophes'])
+        if ($this->options['strip_apostrophes'])
             $str = str_replace("'", '', $str);
 
         // look for groupings of alpha characters; disregard symbols and numbers
         preg_match_all('([a-z]+)', strtolower($str), $words);
         $tokens = $words[0];
 
-        if ($this->options['removeStopWords'])
+        if ($this->options['remove_stop_words'])
             $tokens = array_filter($tokens, function ($w) {
                 return !in_array($w, static::$stopWords);
             });

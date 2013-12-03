@@ -16,9 +16,9 @@ services:
     bmn_wiki_categorizer_util.mediawiki_article_fetcher:
         class: %bmn_wiki_categorizer_util.mediawiki_article_fetcher.class%
         arguments:
-            -
-                useragent: '%bmn_wiki_categorizer_util.mediawiki_article_fetcher.user_agent%'
-                url: '%bmn_wiki_categorizer_util.mediawiki_article_fetcher.url%'
+            - '%bmn_wiki_categorizer_util.mediawiki_article_fetcher.options%'
 
     bmn_wiki_categorizer_util.mediawiki_tokenizer:
         class: %bmn_wiki_categorizer_util.mediawiki_tokenizer.class%
+        arguments:
+            - '%bmn_wiki_categorizer_util.mediawiki_tokenizer.options%'

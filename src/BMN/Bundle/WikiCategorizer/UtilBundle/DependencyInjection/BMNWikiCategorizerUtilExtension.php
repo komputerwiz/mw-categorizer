@@ -22,9 +22,8 @@ class BMNWikiCategorizerUtilExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('bmn_wiki_categorizer_util.mediawiki_article_fetcher.user_agent', $config['mediawiki_article_fetcher']['user_agent']);
-        $container->setParameter('bmn_wiki_categorizer_util.mediawiki_article_fetcher.url', $config['mediawiki_article_fetcher']['url']);
-
+        $container->setParameter('bmn_wiki_categorizer_util.mediawiki_article_fetcher.options', $config['mediawiki_article_fetcher']);
+        $container->setParameter('bmn_wiki_categorizer_util.mediawiki_tokenizer.options', $config['mediawiki_tokenizer']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

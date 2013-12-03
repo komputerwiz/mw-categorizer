@@ -17,7 +17,7 @@ class MediaWikiArticleFetcher extends AbstractArticleFetcher
 
         $props = array('categories');
 
-        if ($this->options['renderWikiText']) {
+        if ($this->options['render_wiki_text']) {
             $props[] = 'extracts';
             $resolver->setDefaults(array(
                 'explaintext' => '',
@@ -46,7 +46,7 @@ class MediaWikiArticleFetcher extends AbstractArticleFetcher
         parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults(array(
-            'renderWikiText' => true,
+            'render_wiki_text' => true,
         ));
     }
 
@@ -67,7 +67,7 @@ class MediaWikiArticleFetcher extends AbstractArticleFetcher
 
             $categories = trim($categories);
 
-            $content = $this->options['renderWikiText'] ? $page['extract'] : $page['revisions'][0]['*'];
+            $content = $this->options['render_wiki_text'] ? $page['extract'] : $page['revisions'][0]['*'];
             return compact('content', 'categories');
         }
     }

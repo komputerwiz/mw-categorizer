@@ -32,7 +32,7 @@ abstract class AbstractArticleFetcher
         // send API request
         $ch = curl_init($this->options['url'] . '?' . http_build_query($resolver->resolve($opts)));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->options['useragent']);
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->options['user_agent']);
         $data = curl_exec($ch);
         if (!$data)
             throw new \RuntimeException("Could not fetch article data");
@@ -53,7 +53,7 @@ abstract class AbstractArticleFetcher
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array(
-            'useragent',
+            'user_agent',
             'url',
         ));
     }
