@@ -3,10 +3,10 @@
 {% block title %}Manual Entry - {{ parent() }}{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="page-header">
         <h1>Input Your Own Content</h1>
-        {% include 'BMNWikiCategorizerFrontendBundle:Default:_inputForm.html.twig' %}
     </div>
+    {% include 'BMNWikiCategorizerFrontendBundle:Default:_inputForm.html.twig' %}
 {% endblock %}
 
 {% block javascripts %}

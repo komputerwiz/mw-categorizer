@@ -1,3 +1,9 @@
 main:
     resource: "@BMNWikiCategorizerFrontendBundle/Controller/"
     type:     annotation
+
+about:
+    pattern: /about
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: BMNWikiCategorizerFrontendBundle:Static:about.html.twig
