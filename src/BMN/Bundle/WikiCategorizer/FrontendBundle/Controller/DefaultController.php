@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use BMN\Bundle\WikiCategorizer\FrontendBundle\Collection\CategoryConfidenceMaxHeap;
 use BMN\Bundle\WikiCategorizer\FrontendBundle\Entity\Category;
+use BMN\Bundle\WikiCategorizer\FrontendBundle\Entity\QueryCache;
 use BMN\Bundle\WikiCategorizer\FrontendBundle\Form\Type\FetchType;
 use BMN\Bundle\WikiCategorizer\FrontendBundle\Form\Type\InputType;
 use BMN\Bundle\WikiCategorizer\FrontendBundle\Form\Type\VerifyType;
@@ -110,8 +111,14 @@ class DefaultController extends Controller
             $data = $form->getData();
             $currentCategories = (0 === strlen(trim($data['categories']))) ? array() : explode("\n", trim($data['categories']));
             array_walk($currentCategories, function (&$c) { $c = trim($c); });
+
+            $categories = $this->getCategories($data['content']);
+            foreach ($categories as $category)
+                if (in_array($category->getTitle(), $currentCategories))
+                    $category->setAssigned();
+
             return $this->render('BMNWikiCategorizerFrontendBundle:Default:results.html.twig', array(
-                'categories' => $this->getCategories($data['content'], $currentCategories),
+                'categories' => $categories,
                 'article' => $data['content'],
             ));
         }
@@ -133,15 +140,29 @@ class DefaultController extends Controller
     }
 
 
-    private function getCategories($content, $currentCategories)
+    private function getCategories($content)
     {
-        $repo = $this->getDoctrine()->getRepository('BMNWikiCategorizerFrontendBundle:Category');
+        // attempt to fetch cached results
+        $cacheRepo = $this->getDoctrine()->getRepository('BMNWikiCategorizerFrontendBundle:QueryCache');
+        $cache = new QueryCache($content);
+        $realCache = $cacheRepo->find($cache->getHash());
+
+        if ($realCache) {
+            // hydrate array of Category objects; order is preserved by serialization
+            return array_map(function ($info) {
+                $c = new Category($info[QueryCache::TITLE]);
+                $c->setConfidence($info[QueryCache::CONFIDENCE]);
+                return $c;
+            }, $realCache->getResults());
+        }
+
+        $categoryRepo = $this->getDoctrine()->getRepository('BMNWikiCategorizerFrontendBundle:Category');
         $tokenizer = $this->get('mediawiki_tokenizer');
 
         $terms = array_unique($tokenizer->tokenize($content));
         $heap = new CategoryConfidenceMaxHeap();
 
-        $categories = $repo->findAll();
+        $categories = $categoryRepo->findAll();
         foreach ($categories as $category) {
             $confidence = $category->getProbC();
             foreach ($terms as $term)
@@ -152,9 +173,11 @@ class DefaultController extends Controller
 
         $top = iterator_to_array(new \LimitIterator($heap, 0, 20));
 
-        foreach ($top as $category)
-            if (in_array($category->getTitle(), $currentCategories))
-                $category->setAssigned();
+        // save cache row
+        $cache->setResults($top);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($cache);
+        $em->flush();
 
         return $top;
     }

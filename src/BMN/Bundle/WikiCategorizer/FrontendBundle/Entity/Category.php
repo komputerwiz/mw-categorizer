@@ -5,10 +5,7 @@ namespace BMN\Bundle\WikiCategorizer\FrontendBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Category
- *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="BMN\Bundle\WikiCategorizer\FrontendBundle\Entity\CategoryRepository")
+ * @ORM\Entity
  */
 class Category
 {
