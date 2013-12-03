@@ -2,47 +2,51 @@
 
 namespace BMN\Bundle\WikiCategorizer\UtilBundle\Fetcher;
 
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 class MediaWikiArticleFetcher extends AbstractArticleFetcher
 {
     /**
-     * MediaWiki Host URL
-     * @var string
-     */
-    private $url;
-
-
-    public function __construct($userAgent, $url)
-    {
-        parent::__construct($userAgent);
-        $this->url = $url;
-    }
-
-
-    /**
      * {@inheritdoc}
      */
-    protected function getUrl()
+    protected function getUrlParams(OptionsResolverInterface $resolver)
     {
-        return $this->url;
-    }
+        parent::getUrlParams($resolver);
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getUrlParams(array $options)
-    {
-        if (!isset($options['title']))
-            throw new InvalidArgumentException('Missing "title" key for MediaWikiArticleFetcher');
+        $props = array('categories');
 
-        $superParams = parent::getUrlParams($options);
+        if ($this->options['renderWikiText']) {
+            $props[] = 'extracts';
+            $resolver->setDefaults(array(
+                'explaintext' => '',
+                'exlimit' => 1,
+            ));
+        } else {
+            $props[] = 'revisions';
+            $resolver->setDefaults(array(
+                'rvprop' => 'content',
+            ));
+        }
 
-        return array_merge($superParams, array(
+        $resolver->setDefaults(array(
             'format' => 'json',
             'action' => 'query',
-            'prop' => implode('|', array('revisions', 'categories')),
-            'rvprop' => 'content',
-            'cllimit' => 500,
-            'titles' => $options['title'],
+            'prop' => implode('|', $props),
+            'titles' => function (Options $options) {
+                return $options['title'];
+            },
+        ));
+
+    }
+
+    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        parent::setDefaultOptions($resolver);
+
+        $resolver->setDefaults(array(
+            'renderWikiText' => true,
         ));
     }
 
@@ -63,7 +67,7 @@ class MediaWikiArticleFetcher extends AbstractArticleFetcher
 
             $categories = trim($categories);
 
-            $content = $page['revisions'][0]['*'];
+            $content = $this->options['renderWikiText'] ? $page['extract'] : $page['revisions'][0]['*'];
             return compact('content', 'categories');
         }
     }

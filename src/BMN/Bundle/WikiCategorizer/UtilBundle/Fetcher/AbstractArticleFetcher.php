@@ -2,18 +2,19 @@
 
 namespace BMN\Bundle\WikiCategorizer\UtilBundle\Fetcher;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 abstract class AbstractArticleFetcher
 {
-    /**
-     * User Agent to use when making HTTP requests
-     * @var string
-     */
-    private $userAgent;
+    protected $options;
 
 
-    public function __construct($userAgent)
+    public function __construct(array $options = array())
     {
-        $this->userAgent = $userAgent;
+        $resolver = new OptionsResolver();
+        $this->setDefaultOptions($resolver);
+        $this->options = $resolver->resolve($options);
     }
 
 
@@ -22,32 +23,39 @@ abstract class AbstractArticleFetcher
      * @param  array  $opts extra options for fetch operation
      * @return mixed           handled fetch data
      */
-    public function fetch(array $opts)
+    public function fetch(array $opts = array())
     {
+        // build query options
+        $resolver = new OptionsResolver();
+        $this->getUrlParams($resolver);
+
         // send API request
-        $ch = curl_init($this->getUrl() . '?' . http_build_query($this->getUrlParams($opts)));
+        $ch = curl_init($this->options['url'] . '?' . http_build_query($resolver->resolve($opts)));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->options['useragent']);
         $data = curl_exec($ch);
         if (!$data)
             throw new \RuntimeException("Could not fetch article data");
         return $this->handleData($data);
     }
 
-
-    /**
-     * Get URL to which API requests should be made
-     * @return string
-     */
-    abstract protected function getUrl();
-
     /**
      * Get default Fetch URL parameters
      * @return array default URL parameters
      */
-    protected function getUrlParams(array $opts)
+    protected function getUrlParams(OptionsResolverInterface $resolver)
     {
-        return array();
+        $resolver->setRequired(array(
+            'title',
+        ));
+    }
+
+    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(array(
+            'useragent',
+            'url',
+        ));
     }
 
     /**
