@@ -13,7 +13,7 @@
                 "name": "d2g/wiki-parser",
                 "version": "dev-master",
                 "source": {
-                    "url": "https://github.com/d2g/WikiParser",
+                    "url": "git@git.komputerwiz.net:edu/tamu/csce-470/project-d2g-wiki-parser.git",
                     "type": "git",
                     "reference": "origin/master"
                 },

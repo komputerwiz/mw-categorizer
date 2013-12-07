@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "7d2ac0dbb6da3ace1f76a37c81259be2",
+    "hash": "86f8cfc143c70ea099ba55d5b392bf5a",
     "packages": [
         {
             "name": "camspiers/porter-stemmer",
@@ -40,14 +40,16 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/d2g/WikiParser",
+                "url": "git@git.komputerwiz.net:edu/tamu/csce-470/project-d2g-wiki-parser.git",
                 "reference": "origin/master"
             },
-            "autoload": {
-                "files": [ "wikiParser.class.php" ]
-            },
             "type": "library",
-            "time": "2013-05-18 20:37:00"
+            "autoload": {
+                "files": [
+                    "wikiParser.class.php"
+                ]
+            },
+            "time": "2013-12-07 08:56:28"
         },
         {
             "name": "doctrine/annotations",
