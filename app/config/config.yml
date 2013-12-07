@@ -74,3 +74,4 @@ bmn_wiki_categorizer_util:
     mediawiki_article_fetcher:
         url:        'http://en.wikipedia.org/w/api.php'
         user_agent: 'WikipediaCategorizer/0.1 (mbarry@tamu.edu)'
+        render_wiki_text: false

@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('strip_apostrophes')->defaultTrue()->end()
                         ->booleanNode('remove_stop_words')->defaultTrue()->end()
                         ->booleanNode('stemming')->defaultTrue()->end()
+                        ->booleanNode('parse_wiki_text')->defaultTrue()->end()->end()
                     ->end()
                 ->end()
             ->end()
