@@ -142,9 +142,13 @@ class DefaultController extends Controller
 
     private function getCategories($content)
     {
+        // tokenize query
+        $tokenizer = $this->get('mediawiki_tokenizer');
+        $terms = array_unique($tokenizer->tokenize($content));
+
         // attempt to fetch cached results
         $cacheRepo = $this->getDoctrine()->getRepository('BMNWikiCategorizerFrontendBundle:QueryCache');
-        $cache = new QueryCache($content);
+        $cache = new QueryCache($terms);
         $realCache = $cacheRepo->find($cache->getHash());
 
         if ($realCache) {
@@ -157,9 +161,7 @@ class DefaultController extends Controller
         }
 
         $categoryRepo = $this->getDoctrine()->getRepository('BMNWikiCategorizerFrontendBundle:Category');
-        $tokenizer = $this->get('mediawiki_tokenizer');
 
-        $terms = array_unique($tokenizer->tokenize($content));
         $heap = new CategoryConfidenceMaxHeap();
 
         $categories = $categoryRepo->findAll();
