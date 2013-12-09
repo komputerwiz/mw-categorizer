@@ -24,9 +24,9 @@ class QueryCache
     private $results;
 
 
-    public function __construct($query)
+    public function __construct(array $queryTerms)
     {
-        $this->hash = sha1($query);
+        $this->hash = $this->makeHash($queryTerms);
         $this->results = array();
     }
 
@@ -51,5 +51,13 @@ class QueryCache
     public function getResults()
     {
         return $this->results;
+    }
+
+
+    private function makeHash(array $terms)
+    {
+        // the order of query terms should not matter.
+        sort($terms);
+        return sha1(serialize($terms));
     }
 }
