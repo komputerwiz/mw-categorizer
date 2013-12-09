@@ -19,7 +19,7 @@ install: composer.phar
 
 .PHONY: update
 update: composer.phar
-	php composer.phar self_update
+	php composer.phar self-update
 	git pull
 	bower install
 	php composer.phar install
