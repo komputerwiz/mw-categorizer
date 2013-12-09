@@ -4,12 +4,22 @@
     <div class="page-header">
         <h1>About this Project</h1>
     </div>
-    <p>Some helpful information about this project</p>
-    <p>yada yada created by</p>
+
+    <p>Wikipedia Categorizer is designed to improve Wikipedia by suggesting new categories for an existing article or a newly written article. Categories are crucial to keeping the millions of articles organized, but there are an uncountable number of them on Wikipedia. It is extremely difficult for a user to know what categories a certain article should belong to, so this application can help. A user can simply input an existing article's title or article text, and the application will generate a list of suggested categories.</p>
+    
+    <p>More interesting information:</p>
+    <ul>
+        <li>This application employs a <a href="http://en.wikipedia.org/wiki/Naive_Bayes_classifier" target="_blank">Naive Bayes classifier</a> to determine what categories a certain article should belong to. The application takes the top 20 most-likely categories and returns them in sorted order by confidence.</li>
+        <li>Because Naive Bayes classification is computationally expensive, the application only compares the article with about 15,000 categories. This number could easily increase if there was more computing power available.</li>
+        <li>The analysis of an average Wikipedia article takes 20-30 seconds, so we have cached the results of a few articles for quicker demonstration.</li>
+    </ul>
+
+    <p>Wikipedia Categorizer was created by:</p>
     <ul>
         <li>Matthew Barry</li>
         <li>Brett Walker</li>
         <li>Nicholas McHenry</li>
     </ul>
-    <p>yada yada <a href="http://courses.cse.tamu.edu/caverlee/csce470/" target="_blank">CSCE 470 &ndash; Information Storage and Retrieval</a>, <a href="http://faculty.cse.tamu.edu/caverlee/" target="_blank">James Caverlee</a> at <a href="http://tamu.edu" target="_blank">Texas A&amp;M University</a>.</p>
+    
+    <p>Wikipedia Categorizer was built as a class project for <a href="http://courses.cse.tamu.edu/caverlee/csce470/" target="_blank">CSCE 470 &ndash; Information Storage and Retrieval</a> at <a href="http://tamu.edu" target="_blank">Texas A&amp;M University</a> taught by <a href="http://faculty.cse.tamu.edu/caverlee/" target="_blank">Dr. James Caverlee</a>.</p>
 {% endblock %}
