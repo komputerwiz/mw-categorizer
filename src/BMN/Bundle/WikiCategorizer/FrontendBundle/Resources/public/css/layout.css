@@ -1,3 +1,7 @@
 body {
     padding-top: 70px;
 }
+
+#categories a {
+    color: inherit;
+}

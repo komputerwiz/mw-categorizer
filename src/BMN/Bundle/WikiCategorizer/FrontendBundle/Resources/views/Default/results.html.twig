@@ -11,7 +11,7 @@
     <ol id="categories">
         {% for category in categories %}
             <li data-confidence="{{ category.confidence }}">
-                {{ category }}
+                <a href="http://en.wikipedia.org/wiki/{{ category|replace({' ':'_'})|url_encode }}" target="_blank">{{ category }}</a>
                 {% if category.assigned %}
                     <i class="glyphicon glyphicon-ok" style="color:green;"></i>
                 {% endif %}
